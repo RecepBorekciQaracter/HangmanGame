@@ -1,69 +1,122 @@
 package org.example;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
 
 public class Main {
     static void main() {
-        String[] wordList = {"athletics", "aerobics", "bowling", "bungee jumping", "cycling", "darts", "fencing", "fishing", "football", "hiking"};
         Scanner sc = new Scanner(System.in);
         StringBuilder sb = new StringBuilder();
         Set<Character> guessedLetters = new HashSet<Character>();
 
-        System.out.println("-------------------------------");
-        System.out.println("Welcome to the Hangman Game! ");
-        System.out.println("Press 1 to start!");
+        Map<Integer, String> fileNameMap = new HashMap<>();
 
-        int choice = sc.nextInt();
+        fileNameMap.put(1, "daily.txt");
+        fileNameMap.put(2, "nature.txt");
+        fileNameMap.put(3, "education.txt");
+        fileNameMap.put(4, "psychology.txt");
+        fileNameMap.put(5, "finance.txt");
+        fileNameMap.put(6, "technology.txt");
+        fileNameMap.put(7, "music.txt");
 
-        switch (choice) {
-            case 1:
-                String currentWord = getRandomWord(wordList);
-                char[] convertedWord = convertWord(currentWord, sb);
+        printMenu();
 
-                System.out.println("Your word is: ");
-                System.out.println(currentWord);
-                System.out.println(convertedWord);
-                System.out.println("Now, enter a letter to guess the word!");
+        int choice = getChoice(sc, fileNameMap.size());
 
-                while (!currentWord.equals(new String(convertedWord))) {
-                    char guess = sc.next().toLowerCase().charAt(0);
-                    if (guessedLetters.contains(guess)) {
-                        System.out.println("You've already tried the letter " + guess + ". Try something else!");
-                        continue;
+        String fileName = fileNameMap.get(choice);
+
+        WordListReader wordListReader = new WordListReader();
+        try {
+            wordListReader.readWords(fileName);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        ArrayList<String> wordList = wordListReader.getWords();
+
+        System.out.println("Now let the game begin!");
+
+        String currentWord = getRandomWord(wordList);
+        char[] convertedWord = convertWord(currentWord, sb);
+
+        System.out.println("Your word is: ");
+        System.out.println(currentWord);
+        System.out.println(convertedWord);
+        System.out.println("Now, enter a letter to guess the word!");
+
+        while (!currentWord.equals(new String(convertedWord))) {
+            char guess = sc.next().toLowerCase().charAt(0);
+            if (guessedLetters.contains(guess)) {
+                System.out.println("You've already tried the letter " + guess + ". Try something else!");
+                continue;
+            }
+            guessedLetters.add(guess);
+
+            if (currentWord.contains("" + guess)) {
+                for (int i = 0; i < currentWord.length(); i++) {
+                    if (currentWord.charAt(i) == guess) {
+                        convertedWord[i] = guess;
                     }
-                    guessedLetters.add(guess);
-
-                    if (currentWord.contains("" + guess)) {
-                        for (int i = 0; i < currentWord.length(); i++) {
-                            if (currentWord.charAt(i) == guess) {
-                                convertedWord[i] = guess;
-                            }
-                        }
-                        System.out.println("Congrats! You guessed a letter! Now the word is: ");
-                        System.out.println(new String(convertedWord));
-                    } else {
-                        System.out.println("Wrong guess! Try again!");
-                    }
-
-
                 }
+                System.out.println("Congrats! You guessed a letter! Now the word is: ");
+                System.out.println(new String(convertedWord));
+            } else {
+                System.out.println("Wrong guess! Try again!");
+            }
 
-                System.out.println();
-                System.out.println("Congratulations! You won!");
-                System.out.println("The word was: " + currentWord);
-                break;
 
         }
 
+        System.out.println();
+        System.out.println("Congratulations! You won!");
+        System.out.println("The word was: " + currentWord);
 
     }
 
-    private static String getRandomWord(String[] wordList) {
-        int randomWordDigit = (int) Math.floor((Math.random() * wordList.length));
-        String chosenWord = wordList[randomWordDigit];
+    private static int getChoice(Scanner sc, int size){
+        int choice;
+
+        while (true) {
+            System.out.print("Your choice: ");
+
+            if (!sc.hasNextInt()) {
+                System.out.println("Please enter an integer number!");
+                sc.nextLine(); // discard invalid input
+                continue;
+            }
+
+            choice = sc.nextInt();
+            sc.nextLine(); // consume newline
+
+            if (choice < 1 || choice > size) {
+                System.out.println("Please enter a number between 1 and " + size);
+                continue;
+            }
+
+            break;
+        }
+
+        System.out.println();
+        return choice;
+    }
+
+    private static void printMenu() {
+        System.out.println("-------------------------------");
+        System.out.println("Welcome to the Hangman Game! ");
+        System.out.println("Choose your word pack please!");
+        System.out.println("1. Daily Life");
+        System.out.println("2. Nature & Plants");
+        System.out.println("3. Education & Learning");
+        System.out.println("4. Psychology & Mind");
+        System.out.println("5. Finance & Economics");
+        System.out.println("6. Technology");
+        System.out.println("7. Music");
+    }
+
+    private static String getRandomWord(ArrayList<String> wordList) {
+        int randomWordDigit = (int) Math.floor((Math.random() * wordList.size()));
+        String chosenWord = wordList.get(randomWordDigit);
 
         return chosenWord;
     }
