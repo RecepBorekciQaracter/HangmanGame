@@ -1,0 +1,13 @@
+market
+investment
+profit
+loss
+revenue
+expense
+asset
+liability
+equity
+stock
+bond
+risk
+return

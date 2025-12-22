@@ -1,0 +1,10 @@
+home
+family
+food
+water
+sleep
+work
+hobby
+travel
+routine
+health

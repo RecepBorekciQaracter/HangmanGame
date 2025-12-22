@@ -1,0 +1,11 @@
+study
+lesson
+lecture
+exam
+assignment
+research
+theory
+practice
+concept
+skill
+knowledge

@@ -1,0 +1,15 @@
+plant
+tree
+leaf
+root
+stem
+flower
+seed
+soil
+grass
+forest
+garden
+branch
+bark
+fruit
+herb
