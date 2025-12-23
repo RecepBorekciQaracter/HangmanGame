@@ -12,7 +12,7 @@ public class Main {
         Map<Integer, String> fileNameMap = new HashMap<>();
 
         fileNameMap.put(1, "daily.txt");
-        fileNameMap.put(2, "nature.txt");
+        fileNameMap.put(2, "plants.txt");
         fileNameMap.put(3, "education.txt");
         fileNameMap.put(4, "psychology.txt");
         fileNameMap.put(5, "finance.txt");
