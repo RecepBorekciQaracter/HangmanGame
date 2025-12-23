@@ -6,9 +6,6 @@ import java.util.*;
 public class Main {
     static void main() {
         Scanner sc = new Scanner(System.in);
-        StringBuilder sb = new StringBuilder();
-        Set<Character> guessedLetters = new HashSet<Character>();
-
         Map<Integer, String> fileNameMap = new HashMap<>();
 
         fileNameMap.put(1, "daily.txt");
@@ -38,39 +35,22 @@ public class Main {
         System.out.println("Now let the game begin!");
 
         String currentWord = getRandomWord(wordList);
-        char[] convertedWord = convertWord(currentWord, sb);
+
+        Hangman hangman = new Hangman(currentWord);
 
         System.out.println("Your word is: ");
-        System.out.println(currentWord);
-        System.out.println(convertedWord);
+        System.out.println(hangman.getMaskedWord());
         System.out.println("Now, enter a letter to guess the word!");
 
-        while (!currentWord.equals(new String(convertedWord))) {
-            char guess = sc.next().toLowerCase().charAt(0);
-            if (guessedLetters.contains(guess)) {
-                System.out.println("You've already tried the letter " + guess + ". Try something else!");
-                continue;
-            }
-            guessedLetters.add(guess);
+        while (!hangman.isWon()) {
+            char guessLetter = sc.next().toLowerCase().charAt(0);
 
-            if (currentWord.contains("" + guess)) {
-                for (int i = 0; i < currentWord.length(); i++) {
-                    if (currentWord.charAt(i) == guess) {
-                        convertedWord[i] = guess;
-                    }
-                }
-                System.out.println("Congrats! You guessed a letter! Now the word is: ");
-                System.out.println(new String(convertedWord));
-            } else {
-                System.out.println("Wrong guess! Try again!");
-            }
-
-
+            hangman.guess(guessLetter);
         }
 
         System.out.println();
         System.out.println("Congratulations! You won!");
-        System.out.println("The word was: " + currentWord);
+        System.out.println("The word was: " + hangman.getOriginalWord());
 
     }
 
