@@ -45,7 +45,13 @@ public class Main {
         while (!hangman.isWon()) {
             char guessLetter = sc.next().toLowerCase().charAt(0);
 
-            hangman.guess(guessLetter);
+            if (hangman.isGuessesLeft()) {
+                hangman.guess(guessLetter);
+            } else {
+                System.out.println("You have no guesses remaining! You lost!");
+                System.exit(0);
+            }
+
         }
 
         System.out.println();

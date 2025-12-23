@@ -7,6 +7,8 @@ public class Hangman {
     private final String originalWord;
     private char[] maskedWord;
     private Set<Character> guessedLetters = new HashSet<Character>();
+    private final static int WRONG_GUESS_LIMIT = 5;
+    private int wrongGuessCount = 0;
 
     public Hangman(String originalWord) {
         this.originalWord = originalWord;
@@ -38,6 +40,10 @@ public class Hangman {
         return originalWord.equals(new String(maskedWord));
     }
 
+    public boolean isGuessesLeft() {
+        return wrongGuessCount+1 < WRONG_GUESS_LIMIT;
+    }
+
     public boolean guess(char letter) {
         if (guessedLetters.contains(letter)) {
             System.out.println("You've already tried the letter " + letter + ". Try something else!");
@@ -57,8 +63,10 @@ public class Hangman {
             System.out.println(new String(maskedWord));
             correctGuess = true;
         } else {
-            System.out.println("Wrong guess! Try again!");
+            wrongGuessCount++;
+            System.out.println("Wrong guess! Try again! You have " + (WRONG_GUESS_LIMIT - wrongGuessCount) + " wrong guesses remaining!");
         }
+
 
         return correctGuess;
     }
