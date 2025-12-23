@@ -12,15 +12,56 @@ This project focuses on:
 
 ---
 
-## 🎮 How the Game Works
+## ▶️ How to Play (Quick Start)
 
-1. The game starts and displays a **menu of word categories**.
+When you run the game, you will first see a **menu of word categories**:
+
+```
+-------------------------------
+Welcome to the Hangman Game!
+Choose your word pack please!
+1. Daily Life
+2. Nature & Plants
+3. Education & Learning
+4. Psychology & Mind
+5. Finance & Economics
+6. Technology
+7. Music
+```
+
+### Step-by-step
+
+1. **Enter a number (1–7)** to choose a word category.
+2. The game loads a random word from the selected category.
+3. The word is shown as **underscores (`_`)**, with spaces preserved.
+4. **Type one letter at a time** to guess the word.
+5. Correct guesses reveal letters in the word.
+6. Wrong guesses reduce your remaining attempts.
+7. Duplicate letter guesses are detected and blocked.
+8. You **win** when all letters are revealed.
+9. You **lose** if you run out of allowed wrong guesses.
+
+Example:
+
+```
+Your word is:
+_ _ _ _ _  _ _ _ _ _
+
+Enter a letter:
+a
+```
+
+---
+
+## 🎮 How the Game Works (Internals)
+
+1. The game displays a **menu of word categories**.
 2. The player selects a category by entering a number.
 3. Words are loaded from a corresponding **text file**.
 4. One word is chosen randomly.
 5. The player guesses letters until the word is fully revealed.
 6. Duplicate guesses are detected and prevented.
-7. The game ends when the word is completely guessed.
+7. The game ends when the word is completely guessed or guesses run out.
 
 ---
 
@@ -33,10 +74,11 @@ HangmanGame
 │   │   ├── java
 │   │   │   └── org.example
 │   │   │       ├── Main.java
+│   │   │       ├── Hangman.java
 │   │   │       └── WordListReader.java
 │   │   └── resources
 │   │       ├── daily.txt
-│   │       ├── nature.txt
+│   │       ├── plants.txt
 │   │       ├── education.txt
 │   │       ├── psychology.txt
 │   │       ├── finance.txt
@@ -54,17 +96,31 @@ Responsible for:
 
 * displaying the menu
 * handling user input
-* selecting the word pack
-* running the game loop
-* processing guesses
+* validating category selection
+* loading word packs
+* starting the game loop
+
+---
+
+### `Hangman`
+
+Responsible for:
+
+* masking the original word
+* tracking guessed letters
+* handling guesses
+* counting wrong attempts
+* checking win / lose conditions
+
+---
 
 ### `WordListReader`
 
 Responsible for:
 
 * loading words from text files
-* reading one word per line
-* storing words in a list for the game
+* reading one word or phrase per line
+* storing words in memory for the game
 
 Text files are loaded from the **classpath** using `resources/`.
 
@@ -122,12 +178,12 @@ Available categories:
 
 ## 🚀 Possible Improvements
 
-* Add limited lives (classic Hangman)
-* Display remaining attempts
+* Add visual Hangman stages (ASCII art)
+* Display remaining attempts after each guess
 * Add replay option
 * Separate game logic into a `HangmanGame` class
 * Add difficulty levels
-* Track scores
+* Track scores across rounds
 
 ---
 
