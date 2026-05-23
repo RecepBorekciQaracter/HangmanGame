@@ -10,6 +10,6 @@ database
 network
 server
 cloud
-AI (artificial intelligence)
+artificial intelligence
 machine learning
 cybersecurity
