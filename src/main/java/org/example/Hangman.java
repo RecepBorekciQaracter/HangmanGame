@@ -11,7 +11,7 @@ public class Hangman {
     private int wrongGuessCount = 0;
 
     public Hangman(String originalWord) {
-        this.originalWord = originalWord;
+        this.originalWord = originalWord.toLowerCase();
         this.maskedWord = maskWord(originalWord);
     }
 
@@ -26,10 +26,10 @@ public class Hangman {
     private char[] maskWord(String word) {
         char[] currentWord = new char[word.length()];
         for (int i = 0; i < word.length(); i++) {
-            if (word.charAt(i) != 32) {
+            if (Character.isLetter(word.charAt(i))) {
                 currentWord[i] = '_';
             } else {
-                currentWord[i] = ' ';
+                currentWord[i] = word.charAt(i);
             }
         }
 
@@ -41,7 +41,7 @@ public class Hangman {
     }
 
     public boolean isGuessesLeft() {
-        return wrongGuessCount+1 < WRONG_GUESS_LIMIT;
+        return wrongGuessCount < WRONG_GUESS_LIMIT;
     }
 
     public boolean guess(char letter) {
@@ -64,7 +64,7 @@ public class Hangman {
             correctGuess = true;
         } else {
             wrongGuessCount++;
-            System.out.println("Wrong guess! Try again! You have " + (WRONG_GUESS_LIMIT - wrongGuessCount) + " wrong guesses remaining!");
+            System.out.println("Wrong guess! You have " + (WRONG_GUESS_LIMIT - wrongGuessCount) + " attempts remaining.");
         }
 
 

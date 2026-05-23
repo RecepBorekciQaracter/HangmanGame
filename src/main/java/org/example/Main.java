@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class Main {
-    static void main() {
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Map<Integer, String> fileNameMap = new HashMap<>();
 
@@ -42,20 +42,17 @@ public class Main {
         System.out.println(hangman.getMaskedWord());
         System.out.println("Now, enter a letter to guess the word!");
 
-        while (!hangman.isWon()) {
+        while (!hangman.isWon() && hangman.isGuessesLeft()) {
             char guessLetter = sc.next().toLowerCase().charAt(0);
-
-            if (hangman.isGuessesLeft()) {
-                hangman.guess(guessLetter);
-            } else {
-                System.out.println("You have no guesses remaining! You lost!");
-                System.exit(0);
-            }
-
+            hangman.guess(guessLetter);
         }
 
         System.out.println();
-        System.out.println("Congratulations! You won!");
+        if (hangman.isWon()) {
+            System.out.println("Congratulations! You won!");
+        } else {
+            System.out.println("You have no guesses remaining! You lost!");
+        }
         System.out.println("The word was: " + hangman.getOriginalWord());
 
     }
